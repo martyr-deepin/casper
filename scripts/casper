@@ -473,7 +473,27 @@ setup_unionfs() {
         aufs|unionfs)
             mount -t ${UNIONFS} -o noatime,dirs=/cow/upper=rw:$rofsstring ${UNIONFS} "$rootmnt" || panic "${UNIONFS} mount failed"
             ;;
-        overlay|overlayfs)
+	overlay)
+            mounts=""
+            for mount in /cow $rofslist
+            do
+                mounts="$mount $mounts"
+            done
+            lower=""
+            for mount in $mounts
+            do
+                if [ "$lower" = "" ]; then
+                    lower="$mount"
+                    continue
+                fi
+                mount -t ${UNIONFS} -o "upperdir=$mount/upper,lowerdir=$lower,workdir=$mount/work" \
+                    ${UNIONFS} "$rootmnt" || \
+                  mount -t ${UNIONFS} -o "upperdir=$mount/upper,lowerdir=$lower" \
+                      ${UNIONFS} "$rootmnt"
+                lower="$rootmnt"
+            done
+	;;
+        overlayfs)
             # Mount the layers pairwise from the bottom onto rootmnt,
             # for the second and later layers rootmnt forms the lower layer.
             mounts=""
