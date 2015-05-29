@@ -20,6 +20,7 @@ esac
 
 manual_add_modules unionfs
 manual_add_modules aufs
+manual_add_modules overlay
 manual_add_modules overlayfs
 
 # unionfs-fuse, if available
