@@ -8,7 +8,7 @@ all:
 	$(MAKE) -C casper-md5check
 	set -e; \
 	for x in bin/* scripts/casper scripts/casper-bottom/* \
-	         ubiquity-hooks/*; do \
+	         ; do \
 		sh -n $$x; \
 	done
 
