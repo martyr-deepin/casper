@@ -67,8 +67,19 @@ manual_add_modules nls_iso8859-1
 # cdrom modules
 manual_add_modules sr_mod
 manual_add_modules ide-cd
+manual_add_modules ide-generic
 manual_add_modules sbp2
 manual_add_modules ohci1394
+
+# Hardware: usb
+manual_add_modules sd_mod
+
+# Program: blockdev
+if [ -x /sbin/blockdev ]
+then
+    [ "${QUIET}" ] || echo -n " blockdev"
+        copy_exec /sbin/blockdev
+fi
 
 # integrity check
 copy_exec /usr/lib/casper/casper-md5check /bin
